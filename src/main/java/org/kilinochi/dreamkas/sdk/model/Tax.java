@@ -26,12 +26,12 @@ public enum Tax implements DreamkasEnum {
     TWENTY("twenty"),
 
     /**
-     * НДС 110%
+     * НДС 10/110%
      */
     ONE_HUNDRED_AND_TEN("one_hundred_and_ten"),
 
     /**
-     * НДС 120%
+     * НДС 20/120%
      */
     ONE_HUNDRED_AND_TWENTY("one_hundred_and_twenty"),
 

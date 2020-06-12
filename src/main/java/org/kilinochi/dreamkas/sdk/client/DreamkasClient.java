@@ -4,10 +4,10 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.kilinochi.dreamkas.sdk.exception.ClientException;
+import org.kilinochi.dreamkas.sdk.exception.SerializationException;
 import org.kilinochi.dreamkas.sdk.exception.ServerException;
 import org.kilinochi.dreamkas.sdk.jackson.JacksonSerializer;
 import org.kilinochi.dreamkas.sdk.jackson.Serializer;
-import org.kilinochi.dreamkas.sdk.exception.SerializationException;
 import org.kilinochi.dreamkas.sdk.queries.DreamkasQuery;
 import org.kilinochi.dreamkas.sdk.queries.QueryParam;
 
@@ -113,7 +113,7 @@ public class DreamkasClient {
         return transport;
     }
 
-    private <T> T handleResponse(ClientResponse response, Class<T> type) throws ServerException {
+    private <T> T handleResponse(ClientResponse response, Class<T> classType) throws ServerException {
         String responseBody = response.getBody();
 
         int statusCode = response.getStatusCode();
@@ -125,7 +125,7 @@ public class DreamkasClient {
         try {
 
             if (response.getStatusCode() / 100 == 2) {
-                return serializer.deserialize(responseBody, type);
+                return serializer.deserialize(responseBody, classType);
             }
         } catch (SerializationException e) {
             throw new ServerException(500, "Internal server error");

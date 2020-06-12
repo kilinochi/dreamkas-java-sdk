@@ -1,0 +1,43 @@
+{
+  "externalId": "2b964ebc-5f03-4a9b-86ff-7e9371611386",
+  "deviceId": 1385,
+  "type": "SALE",
+  "timeout": 5,
+  "taxMode": "DEFAULT",
+  "positions": [
+    {
+      "name": "Шоколад Сникерс",
+      "type": "COUNTABLE",
+      "quantity": 2,
+      "price": 4500,
+      "priceSum": 9000,
+      "tax": "NDS_20",
+      "taxSum": 1620,
+      "tags": [
+        {
+          "tag": 1212,
+          "value": 12
+        }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "sum": 9000,
+      "type": "CASHLESS"
+    }
+  ],
+  "tags": [
+    {
+      "tag": 1212,
+      "value": 12
+    }
+  ],
+  "attributes": {
+    "email": "john.smith@example.com",
+    "phone": "+71239994499"
+  },
+  "total": {
+    "priceSum": 9000
+  }
+}

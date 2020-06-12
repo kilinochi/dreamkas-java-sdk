@@ -18,7 +18,7 @@ public interface Serializer {
     String serializeToString(@NotNull Object object) throws SerializationException;
 
     @NotNull
-    <T> Collection<T> deserialize(String data, Class<? extends Collection<T>> collectionType, Class<T> classType) throws SerializationException;
+    <T> Collection<T> deserialize(String data, Class<Collection<T>> collectionType, Class<T> classType) throws SerializationException;
 
     @NotNull
     <T> T deserialize(@NotNull String data, Class<T> responseType) throws SerializationException;

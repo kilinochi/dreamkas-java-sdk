@@ -61,7 +61,7 @@ public class JacksonSerializer implements Serializer {
 
     @NotNull
     @Override
-    public <T> Collection<T> deserialize(String data, Class<? extends Collection<T>> collectionType, Class<T> classType) throws SerializationException {
+    public <T> Collection<T> deserialize(String data, Class<Collection<T>> collectionType, Class<T> classType) throws SerializationException {
         CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(collectionType, classType);
         Collection<T> res;
         try {

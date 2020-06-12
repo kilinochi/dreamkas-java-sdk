@@ -1,0 +1,30 @@
+{
+  "query": {
+    "from": "2017-10-13T14:15:01.239Z",
+    "to": "2017-10-14T14:15:01.239Z",
+    "limit": 0,
+    "offset": 0
+  },
+  "data": [
+    {
+      "deviceId": 0,
+      "shopId": 0,
+      "type": "MONEY_IN",
+      "shiftId": 0,
+      "cashier": {
+        "tabNumber": "88990",
+        "name": "Иванов Петр Олегович",
+        "inn": "1234567890",
+        "card": "046563",
+        "password": "31544A084DBE2595147669E6088AF2413374A87D880432961CCDA1E729F6F913",
+        "role": "Продавец-консультант",
+        "permissions": [
+          "SALE"
+        ]
+      },
+      "sum": 0,
+      "localDate": "",
+      "date": ""
+    }
+  ]
+}

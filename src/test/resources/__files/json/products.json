@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": "b0381fe4-4428-4dcb-8169-c8bbcab59626",
+      "name": "Новый товар",
+      "type": "COUNTABLE",
+      "departmentId": 0,
+      "quantity": 1000,
+      "prices": [
+        {
+          "deviceId": 1,
+          "value": 1200
+        }
+      ],
+      "isMarked": false,
+      "barcodes": [
+        "AB_1234",
+        "00000001"
+      ],
+      "tax": 0,
+      "createdAt": "2017-05-05T14:15:01.239Z",
+      "updatedAt": "2017-05-05T14:15:01.239Z"
+    },
+    {
+      "id": "cc73c6d9-8d5b-4f3c-8e24-aa582159b589",
+      "name": "Новый товар 2",
+      "type": "SCALABLE",
+      "departmentId": 0,
+      "quantity": 4000,
+      "prices": [
+        {
+          "deviceId": 1,
+          "value": 7200
+        }
+      ],
+      "isMarked": true,
+      "barcodes": [
+        "AB_5834",
+        "00000008"
+      ],
+      "tax": 10,
+      "createdAt": "2018-06-05T19:54:01.239Z",
+      "updatedAt": "2018-06-05T19:54:01.239Z"
+    }
+  ]
+}

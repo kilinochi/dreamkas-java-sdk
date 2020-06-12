@@ -7,6 +7,10 @@ import org.kilinochi.dreamkas.sdk.jackson.JacksonSerializer;
 import org.kilinochi.dreamkas.sdk.jackson.Serializer;
 
 abstract class ServerMock {
+    final static String ENDPOINT_KEY = "test_key_endpoint";
+
+    final static String ENDPOINT = "http://localhost:10000/api";
+    final static String ENDPOINT_V2 = "http://localhost:10000/api/v2";
 
     protected final WireMockServer server = new WireMockServer( 10000);
 
@@ -15,7 +19,7 @@ abstract class ServerMock {
     protected final DreamkasClient client = new DreamkasClient(transport, serializer) {
         @Override
         public String getEndpoint() {
-            return "http://localhost:10000/api";
+            return System.getProperty(ENDPOINT_KEY);
         }
     };
 

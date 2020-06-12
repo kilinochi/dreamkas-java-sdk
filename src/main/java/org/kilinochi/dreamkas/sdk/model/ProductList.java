@@ -13,19 +13,25 @@ import java.util.List;
 /**
  * @author arman.shamenov
  */
-public class ProductList implements DreamkasSerializable {
+public class ProductList implements DreamkasCollection<Product> {
     @NotNull
     private final List<@Valid Product> products;
 
     @JsonCreator
-    public ProductList(@JsonProperty("products") @NotNull List<@Valid Product> products) {
+    public ProductList(@NotNull @JsonProperty("products") List<@Valid Product> products) {
         this.products = products;
     }
 
-    @NotNull
     @JsonProperty("products")
-    public List<Product> getProducts() {
+    public @NotNull List<Product> getProducts() {
         return products;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("products", products)
+                .toString();
     }
 
     @Override
@@ -53,9 +59,7 @@ public class ProductList implements DreamkasSerializable {
     }
 
     @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("products", products)
-                .toString();
+    public Class<Product> getType() {
+        return Product.class;
     }
 }
