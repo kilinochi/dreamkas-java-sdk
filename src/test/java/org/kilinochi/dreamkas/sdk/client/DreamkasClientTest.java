@@ -1,54 +1,38 @@
 package org.kilinochi.dreamkas.sdk.client;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.kilinochi.dreamkas.sdk.jackson.JacksonSerializer;
-import org.kilinochi.dreamkas.sdk.jackson.Serializer;
+import org.kilinochi.dreamkas.sdk.model.Price;
 import org.kilinochi.dreamkas.sdk.model.Product;
 import org.kilinochi.dreamkas.sdk.queries.GetProductQuery;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
-class DreamkasClientTest {
+class DreamkasClientTest extends ServerMock {
 
-    private final WireMockServer server = new WireMockServer( 10000);
-
-    private final DreamkasTransportClient transport = DreamkasTransportClient.createTransport("dummy-token");
-    private final Serializer serializer = new JacksonSerializer();
-    private final DreamkasClient client = new DreamkasClient(transport, serializer) {
-        @Override
-        public String getEndpoint() {
-            return "http://localhost:10000/api";
-        }
-    };
-
-    @BeforeEach
-    void setUp() {
-        server.start();
-        server.stubFor(get(urlEqualTo("/api/products/1"))
+    @Test
+    void productTest() throws ExecutionException, InterruptedException {
+        server.stubFor(get(urlEqualTo("/api/products/b0381fe4-4428-4dcb-8169-c8bbcab59626"))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("json/product.json")));
 
-    }
-
-    @Test
-    void productTest() throws ExecutionException, InterruptedException {
-
-        GetProductQuery query = new GetProductQuery(client, 1L);
+        UUID productId = UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626");
+        GetProductQuery query = new GetProductQuery(client, productId);
         Product product = query.execute().get();
-    }
 
-    @AfterEach
-    void tearDown() {
-        server.stop();
+        assertEquals(productId, product.getId());
+        assertThat(product.getPrices(), hasItems(
+                new Price(1L, 1200L)
+        ));
     }
 }
