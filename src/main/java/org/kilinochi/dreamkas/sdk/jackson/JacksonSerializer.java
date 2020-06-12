@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +14,7 @@ import org.kilinochi.dreamkas.sdk.exception.SerializationException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -28,6 +31,11 @@ public class JacksonSerializer implements Serializer {
         this(new ObjectMapper());
         this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.mapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
+        this.mapper.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
+        simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
+        mapper.registerModule(simpleModule);
     }
 
 
