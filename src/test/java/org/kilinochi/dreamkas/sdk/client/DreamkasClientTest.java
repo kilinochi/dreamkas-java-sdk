@@ -37,6 +37,7 @@ class DreamkasClientTest {
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("json/product.json")));
+
     }
 
     @Test
