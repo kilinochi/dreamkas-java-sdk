@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 /**
  * @author arman.shamenov
  */
-public class ReceiptQuery implements DreamkasSerializable {
+public class QueryResponse implements DreamkasSerializable {
     @NotNull
     private final @Valid LocalDateTime from;
     @NotNull
@@ -24,10 +24,10 @@ public class ReceiptQuery implements DreamkasSerializable {
     private final @Valid Long offset;
 
     @JsonCreator
-    public ReceiptQuery(@NotNull @JsonProperty("from") LocalDateTime from,
-                        @NotNull @JsonProperty("to") LocalDateTime to,
-                        @NotNull @JsonProperty("limit") Long limit,
-                        @NotNull @JsonProperty("offset") Long offset) {
+    public QueryResponse(@NotNull @JsonProperty("from") LocalDateTime from,
+                         @NotNull @JsonProperty("to") LocalDateTime to,
+                         @NotNull @JsonProperty("limit") Long limit,
+                         @NotNull @JsonProperty("offset") Long offset) {
         this.from = from;
         this.to = to;
         this.limit = limit;
@@ -74,7 +74,7 @@ public class ReceiptQuery implements DreamkasSerializable {
             return false;
         }
 
-        ReceiptQuery that = (ReceiptQuery) o;
+        QueryResponse that = (QueryResponse) o;
 
         return new EqualsBuilder()
                 .append(from, that.from)

@@ -1,50 +1,76 @@
 package org.kilinochi.dreamkas.sdk.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * НДС
- *
  * @author arman.shamenov
  */
 public enum Tax implements DreamkasEnum {
-    /**
-     * НДС 0%
-     */
-    ZERO("zero"),
 
     /**
-     * НДС 10%
+     * 0% НДС (Версия API 1)
      */
-    TEN("ten"),
+    ZERO_TAX_V1("zero_tax"),
+    /**
+     * 10% НДС (Версия API 1)
+     */
+    TEN_TAX_V1("ten_tax"),
+    /**
+     * 18% НДС (Версия API 1)
+     */
+    EIGHTEEN_TAX_V1("eighteen_tax"),
+    /**
+     * 20% НДС (Версия API 1)
+     */
+    TWENTY_TAX_V1("twenty_tax"),
+    /**
+     * 10% / 110% НДС (Версия API 1)
+     */
+    ONE_HUNDRED_TEN_V1("one_hundred_ten"),
+    /**
+     * 20% / 120% НДС (Версия API 1)
+     */
+    ONE_HUNDRED_TWENTY_V1("one_hundred_twenty"),
+    /**
+     * смешанный НДС (Версия API 1)
+     */
+    MIXED_V1("mixed"),
+
 
     /**
-     * НДС 20%
+     * Не облагается НДС (Версия API 2)
      */
-    TWENTY("twenty"),
+    NDS_NO_TAX("NDS_NO_TAX"),
+    /**
+     * НДС 0% (Версия API 2)
+     */
+    NDS_0("NDS_0"),
+    /**
+     * НДС 10% (Версия API 2)
+     */
+    NDS_10("NDS_10"),
+    /**
+     * НДС 20% (Версия API 2)
+     */
+    NDS_20("NDS_20"),
+    /**
+     * НДС 10 / 110% (Версия API 2)
+     */
+    NDS_10_CALCULATED("NDS_10_CALCULATED"),
+    /**
+     * НДС 20 / 120% (Версия API 2)
+     */
+    NDS_20_CALCULATED("NDS_20_CALCULATED"),
+    /**
+     * Смешанный НДС в категории (Версия API 2)
+     */
+    NDS_MIXED("NDS_MIXED"),
 
     /**
-     * НДС 10/110%
+     * Null
      */
-    ONE_HUNDRED_AND_TEN("one_hundred_and_ten"),
-
-    /**
-     * НДС 20/120%
-     */
-    ONE_HUNDRED_AND_TWENTY("one_hundred_and_twenty"),
-
-    /**
-     * нет НДС
-     */
-    NULL("null"),
-
-    /**
-     * смешанный НДС (в категории)
-     */
-    HYBRID("hybrid")
-    ;
+    NULL("NULL");
 
     private final String value;
 
@@ -53,54 +79,50 @@ public enum Tax implements DreamkasEnum {
     }
 
     @Override
-    @JsonValue
-    public String getValue() {
-        return String.valueOf(value);
-    }
-
-    @Override
     public String toString() {
         return String.valueOf(value);
     }
 
-    @JsonCreator
-    public static Tax create(@Nullable Integer count) {
+    @Override
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
 
+    public static Tax create(String text) {
+        return DreamkasEnum.create(Tax.class, text);
+    }
+
+    public static Tax create(@Nullable Integer count) {
         if (count == null) {
             return NULL;
         }
 
-        String value;
         switch (count) {
             case -1: {
-                value = "hybrid";
-                break;
+                return MIXED_V1;
             }
             case 0: {
-                value = "zero";
-                break;
+                return ZERO_TAX_V1;
             }
             case 10: {
-                value = "ten";
-                break;
+                return TEN_TAX_V1;
+            }
+            case 18: {
+                return EIGHTEEN_TAX_V1;
             }
             case 20: {
-                value = "twenty";
-                break;
+                return TWENTY_TAX_V1;
             }
             case 110: {
-                value = "one_hundred_and_ten";
-                break;
+                return ONE_HUNDRED_TEN_V1;
             }
             case 120: {
-                value = "one_hundred_and_twenty";
-                break;
+                return ONE_HUNDRED_TWENTY_V1;
             }
             default: {
                 return NULL;
             }
         }
-
-        return DreamkasEnum.create(Tax.class, value);
     }
 }

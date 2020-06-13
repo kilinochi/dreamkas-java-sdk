@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * @author arman.shamenov
  */
-public enum  ProductType implements DreamkasEnum {
+public enum ProductType implements DreamkasEnum {
     /**
      * штучный
      */
@@ -19,6 +19,22 @@ public enum  ProductType implements DreamkasEnum {
      * алкоголь
      */
     ALCOHOL("alcohol"),
+    /**
+     * одежда
+     */
+    CLOTHES("clothes"),
+    /**
+     * обувь
+     */
+    SHOES("shoes"),
+    /**
+     * услуга
+     */
+    SERVICE("service"),
+    /**
+     * табак
+     */
+    TOBACCO("tobacco")
     ;
 
     private final String value;

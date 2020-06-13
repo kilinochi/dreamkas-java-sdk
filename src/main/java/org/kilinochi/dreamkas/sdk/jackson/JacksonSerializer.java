@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.jetbrains.annotations.NotNull;
 import org.kilinochi.dreamkas.sdk.exception.SerializationException;
+import org.kilinochi.dreamkas.sdk.model.Tax;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +34,12 @@ public class JacksonSerializer implements Serializer {
         this.mapper.disable(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS);
         this.mapper.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
         SimpleModule simpleModule = new SimpleModule();
+        SimpleModule simpleModule1 = new SimpleModule();
         simpleModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
         simpleModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
-        mapper.registerModule(simpleModule);
+        simpleModule1.addDeserializer(Tax.class, new TaxDeserializer());
+        simpleModule1.addSerializer(Tax.class, new TaxSerializer());
+        mapper.registerModules(simpleModule, simpleModule1);
     }
 
 

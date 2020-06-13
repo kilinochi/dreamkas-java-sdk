@@ -12,37 +12,26 @@ import java.util.List;
 
 /**
  * @author arman.shamenov
- * Чеки
  */
-public class ReceiptsList implements DreamkasSerializable {
-
+public class DepartmentList implements DreamkasSerializable {
     @NotNull
-    private final @Valid QueryResponse queryResponse;
-    @NotNull
-    private final List<@Valid Receipt> data;
+    private final List<@Valid Department> departments;
 
     @JsonCreator
-    public ReceiptsList(@NotNull @JsonProperty("query") QueryResponse queryResponse,
-                        @NotNull @JsonProperty("data") List<Receipt> data) {
-        this.queryResponse = queryResponse;
-        this.data = data;
+    public DepartmentList(@NotNull @JsonProperty("departments") List<Department> departments) {
+        this.departments = departments;
     }
 
-    @JsonProperty("data")
-    public @NotNull List<Receipt> getData() {
-        return data;
-    }
-
-    @JsonProperty("query")
-    public @NotNull QueryResponse getQueryResponse() {
-        return queryResponse;
+    @NotNull
+    @JsonProperty("departments")
+    public List<Department> getDepartments() {
+        return departments;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("receiptQuery", queryResponse)
-                .append("data", data)
+                .append("departments", departments)
                 .toString();
     }
 
@@ -56,19 +45,17 @@ public class ReceiptsList implements DreamkasSerializable {
             return false;
         }
 
-        ReceiptsList receiptsList = (ReceiptsList) o;
+        DepartmentList that = (DepartmentList) o;
 
         return new EqualsBuilder()
-                .append(queryResponse, receiptsList.queryResponse)
-                .append(data, receiptsList.data)
+                .append(departments, that.departments)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(queryResponse)
-                .append(data)
+                .append(departments)
                 .toHashCode();
     }
 }

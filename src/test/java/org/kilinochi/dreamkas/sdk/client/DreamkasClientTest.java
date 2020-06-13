@@ -5,19 +5,18 @@ import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+import org.kilinochi.dreamkas.sdk.model.Department;
+import org.kilinochi.dreamkas.sdk.model.DepartmentList;
 import org.kilinochi.dreamkas.sdk.model.Price;
 import org.kilinochi.dreamkas.sdk.model.Product;
 import org.kilinochi.dreamkas.sdk.model.ProductList;
 import org.kilinochi.dreamkas.sdk.model.ProductType;
-import org.kilinochi.dreamkas.sdk.model.ProductTypeV2;
-import org.kilinochi.dreamkas.sdk.model.ProductV2;
+import org.kilinochi.dreamkas.sdk.model.QueryResponse;
 import org.kilinochi.dreamkas.sdk.model.Receipt;
-import org.kilinochi.dreamkas.sdk.model.ReceiptQuery;
 import org.kilinochi.dreamkas.sdk.model.ReceiptsList;
 import org.kilinochi.dreamkas.sdk.model.Tax;
-import org.kilinochi.dreamkas.sdk.model.TaxV2;
+import org.kilinochi.dreamkas.sdk.queries.GetDepartmentsQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductQuery;
-import org.kilinochi.dreamkas.sdk.queries.GetProductV2Query;
 import org.kilinochi.dreamkas.sdk.queries.GetProductsQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetReceiptsQuery;
 
@@ -70,15 +69,15 @@ class DreamkasClientTest extends ServerMock {
                         .withBodyFile("json/productV2.json")));
 
         UUID productId = UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626");
-        GetProductV2Query query = new GetProductV2Query(client, productId);
-        ProductV2 product = query.execute().get();
+        GetProductQuery query = new GetProductQuery(client, productId);
+        Product product = query.execute().get();
 
         assertEquals(productId, product.getId());
         assertThat(product.getPrices(), hasItems(
                 new Price(1L, 1200L)
         ));
-        assertThat(product.getTax().getClass(), is(TaxV2.class));
-        assertThat(product.getType().getClass(), is(ProductTypeV2.class));
+        assertThat(product.getTax().getClass(), is(Tax.class));
+        assertThat(product.getType().getClass(), is(ProductType.class));
     }
 
     @Test
@@ -105,7 +104,7 @@ class DreamkasClientTest extends ServerMock {
                 false,
                 null,
                 Lists.newArrayList("AB_1234", "00000001"),
-                Tax.ZERO,
+                Tax.ZERO_TAX_V1,
                 LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER),
                 LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER));
 
@@ -119,7 +118,7 @@ class DreamkasClientTest extends ServerMock {
                 true,
                 null,
                 Lists.newArrayList("AB_5834", "00000008"),
-                Tax.TEN,
+                Tax.TEN_TAX_V1,
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER),
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER));
 
@@ -147,9 +146,33 @@ class DreamkasClientTest extends ServerMock {
                 .execute()
                 .get();
         List<Receipt> data = receiptsList.getData();
-        ReceiptQuery receiptQuery = receiptsList.getReceiptQuery();
+        QueryResponse queryResponse = receiptsList.getQueryResponse();
 
         assertEquals(1, data.size());
-        assertThat(receiptQuery, notNullValue());
+        assertThat(queryResponse, notNullValue());
+    }
+
+    @Test
+    void getDepartmentsTest() throws ExecutionException, InterruptedException {
+        System.setProperty(ENDPOINT_KEY, ENDPOINT);
+
+        server.stubFor(
+                get(urlEqualTo("/api/departments"))
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBodyFile("json/departments.json")));
+
+        DepartmentList departmentList = new GetDepartmentsQuery(client).execute().get();
+
+        List<Department> departments = departmentList.getDepartments();
+
+        assertEquals(4, departments.size());
+        assertThat(departments, hasItems(
+                new Department("Хлебобулочные изделия", Tax.ZERO_TAX_V1, 1L),
+                new Department("Мясные изделия", Tax.TWENTY_TAX_V1, 2L),
+                new Department("Молочная продукция", Tax.NDS_10, 3L),
+                new Department("Бытовая химия", Tax.MIXED_V1, 4L)
+        ));
     }
 }

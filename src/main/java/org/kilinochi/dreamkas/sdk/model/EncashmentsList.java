@@ -1,6 +1,5 @@
 package org.kilinochi.dreamkas.sdk.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,28 +11,26 @@ import java.util.List;
 
 /**
  * @author arman.shamenov
- * Чеки
  */
-public class ReceiptsList implements DreamkasSerializable {
+public class EncashmentsList implements DreamkasSerializable {
 
     @NotNull
     private final @Valid QueryResponse queryResponse;
     @NotNull
-    private final List<@Valid Receipt> data;
+    private final List<@Valid Encashment> data;
 
-    @JsonCreator
-    public ReceiptsList(@NotNull @JsonProperty("query") QueryResponse queryResponse,
-                        @NotNull @JsonProperty("data") List<Receipt> data) {
+    public EncashmentsList(@NotNull @JsonProperty("query") QueryResponse queryResponse,
+                           @NotNull @JsonProperty("data") List<Encashment> data) {
         this.queryResponse = queryResponse;
         this.data = data;
     }
 
-    @JsonProperty("data")
-    public @NotNull List<Receipt> getData() {
+    @JsonProperty("query")
+    public @NotNull List<Encashment> getData() {
         return data;
     }
 
-    @JsonProperty("query")
+    @JsonProperty("data")
     public @NotNull QueryResponse getQueryResponse() {
         return queryResponse;
     }
@@ -41,7 +38,7 @@ public class ReceiptsList implements DreamkasSerializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("receiptQuery", queryResponse)
+                .append("queryResponse", queryResponse)
                 .append("data", data)
                 .toString();
     }
@@ -56,11 +53,11 @@ public class ReceiptsList implements DreamkasSerializable {
             return false;
         }
 
-        ReceiptsList receiptsList = (ReceiptsList) o;
+        EncashmentsList that = (EncashmentsList) o;
 
         return new EqualsBuilder()
-                .append(queryResponse, receiptsList.queryResponse)
-                .append(data, receiptsList.data)
+                .append(queryResponse, that.queryResponse)
+                .append(data, that.data)
                 .isEquals();
     }
 

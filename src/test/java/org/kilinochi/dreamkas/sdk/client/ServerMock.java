@@ -12,7 +12,7 @@ abstract class ServerMock {
     final static String ENDPOINT = "http://localhost:10000/api";
     final static String ENDPOINT_V2 = "http://localhost:10000/api/v2";
 
-    protected final WireMockServer server = new WireMockServer( 10000);
+    protected final WireMockServer server = new WireMockServer(10000);
 
     protected final DreamkasTransportClient transport = DreamkasTransportClient.createTransport("dummy-token");
     protected final Serializer serializer = new JacksonSerializer();

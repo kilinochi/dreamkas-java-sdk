@@ -19,7 +19,7 @@ public class ReceiptPosition implements DreamkasSerializable {
     @NotNull
     private final @Valid String name;
     @NotNull
-    private final @Valid ProductTypeV2 type;
+    private final @Valid ProductType type;
     @NotNull
     private final @Valid Long quantity;
     @NotNull
@@ -33,21 +33,21 @@ public class ReceiptPosition implements DreamkasSerializable {
     @NotNull
     private final @Valid String vendorCode;
     @NotNull
-    private final @Valid TaxV2 tax;
+    private final @Valid Tax tax;
     @NotNull
     private final @Valid Long departmentId;
 
     @JsonCreator
     public ReceiptPosition(@NotNull @JsonProperty("id") UUID id,
                            @NotNull @JsonProperty("name") String name,
-                           @NotNull @JsonProperty("type") ProductTypeV2 type,
+                           @NotNull @JsonProperty("type") ProductType type,
                            @NotNull @JsonProperty("quantity") Long quantity,
                            @NotNull @JsonProperty("price") Long price,
                            @NotNull @JsonProperty("discount") Long discount,
                            @NotNull @JsonProperty("barcode") String barcode,
                            @NotNull @JsonProperty("exciseBarcode") String exciseBarcode,
                            @NotNull @JsonProperty("vendorCode") String vendorCode,
-                           @NotNull @JsonProperty("tax") TaxV2 tax,
+                           @NotNull @JsonProperty("tax") Tax tax,
                            @NotNull @JsonProperty("departmentId") Long departmentId) {
         this.id = id;
         this.name = name;
@@ -93,7 +93,7 @@ public class ReceiptPosition implements DreamkasSerializable {
     }
 
     @JsonProperty("type")
-    public @NotNull ProductTypeV2 getType() {
+    public @NotNull ProductType getType() {
         return type;
     }
 
@@ -113,7 +113,7 @@ public class ReceiptPosition implements DreamkasSerializable {
     }
 
     @JsonProperty("tax")
-    public @NotNull TaxV2 getTax() {
+    public @NotNull Tax getTax() {
         return tax;
     }
 
