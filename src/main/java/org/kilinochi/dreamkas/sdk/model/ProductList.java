@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author arman.shamenov
  */
-public class ProductList implements DreamkasCollection<Product> {
+public class ProductList implements DreamkasSerializable {
     @NotNull
     private final List<@Valid Product> products;
 
@@ -56,10 +56,5 @@ public class ProductList implements DreamkasCollection<Product> {
         return new HashCodeBuilder(17, 37)
                 .append(products)
                 .toHashCode();
-    }
-
-    @Override
-    public Class<Product> getType() {
-        return Product.class;
     }
 }
