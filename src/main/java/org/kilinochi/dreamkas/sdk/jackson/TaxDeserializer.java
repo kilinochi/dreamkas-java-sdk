@@ -4,9 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.IntNode;
 import org.kilinochi.dreamkas.sdk.model.Tax;
 
 import java.io.IOException;
@@ -16,7 +14,7 @@ import java.io.IOException;
  */
 public class TaxDeserializer extends StdDeserializer<Tax> {
 
-    public TaxDeserializer(Class<?> vc) {
+    public TaxDeserializer(Class<Tax> vc) {
         super(vc);
     }
 
