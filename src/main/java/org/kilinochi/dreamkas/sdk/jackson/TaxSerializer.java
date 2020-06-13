@@ -27,31 +27,31 @@ public class TaxSerializer extends StdSerializer<Tax> {
                 generator.writeNumber(-2);
                 break;
             }
-            case ZERO_TAX_V1: {
+            case NDS_0_V1: {
                 generator.writeNumber(0);
                 break;
             }
-            case TEN_TAX_V1: {
+            case NDS_10_V1: {
                 generator.writeNumber(10);
                 break;
             }
-            case EIGHTEEN_TAX_V1: {
+            case NDS_18_V1: {
                 generator.writeNumber(18);
                 break;
             }
-            case TWENTY_TAX_V1: {
+            case NDS_20_V1: {
                 generator.writeNumber(20);
                 break;
             }
-            case ONE_HUNDRED_TEN_V1: {
+            case NDS_10_CALCULATED_V1: {
                 generator.writeNumber(110);
                 break;
             }
-            case ONE_HUNDRED_TWENTY_V1: {
+            case NDS_20_CALCULATED_V1: {
                 generator.writeNumber(120);
                 break;
             }
-            case MIXED_V1: {
+            case NDS_MIXED_V1: {
                 generator.writeNumber(-1);
                 break;
             }

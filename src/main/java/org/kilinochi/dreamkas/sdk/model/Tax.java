@@ -11,31 +11,31 @@ public enum Tax implements DreamkasEnum {
     /**
      * 0% НДС (Версия API 1)
      */
-    ZERO_TAX_V1("zero_tax"),
+    NDS_0_V1("NDS_0_V1"),
     /**
      * 10% НДС (Версия API 1)
      */
-    TEN_TAX_V1("ten_tax"),
+    NDS_10_V1("NDS_10_V1"),
     /**
      * 18% НДС (Версия API 1)
      */
-    EIGHTEEN_TAX_V1("eighteen_tax"),
+    NDS_18_V1("NDS_18_V1"),
     /**
      * 20% НДС (Версия API 1)
      */
-    TWENTY_TAX_V1("twenty_tax"),
+    NDS_20_V1("NDS_10_V1"),
     /**
      * 10% / 110% НДС (Версия API 1)
      */
-    ONE_HUNDRED_TEN_V1("one_hundred_ten"),
+    NDS_10_CALCULATED_V1("NDS_10_CALCULATED_V1"),
     /**
      * 20% / 120% НДС (Версия API 1)
      */
-    ONE_HUNDRED_TWENTY_V1("one_hundred_twenty"),
+    NDS_20_CALCULATED_V1("NDS_10_CALCULATED_V1"),
     /**
-     * смешанный НДС (Версия API 1)
+     * Смешанный НДС в категории (Версия API 1)
      */
-    MIXED_V1("mixed"),
+    NDS_MIXED_V1("NDS_MIXED_V1"),
 
 
     /**
@@ -100,25 +100,25 @@ public enum Tax implements DreamkasEnum {
 
         switch (count) {
             case -1: {
-                return MIXED_V1;
+                return NDS_MIXED_V1;
             }
             case 0: {
-                return ZERO_TAX_V1;
+                return NDS_0_V1;
             }
             case 10: {
-                return TEN_TAX_V1;
+                return NDS_10_V1;
             }
             case 18: {
-                return EIGHTEEN_TAX_V1;
+                return NDS_18_V1;
             }
             case 20: {
-                return TWENTY_TAX_V1;
+                return NDS_20_V1;
             }
             case 110: {
-                return ONE_HUNDRED_TEN_V1;
+                return NDS_10_CALCULATED_V1;
             }
             case 120: {
-                return ONE_HUNDRED_TWENTY_V1;
+                return NDS_20_CALCULATED_V1;
             }
             default: {
                 return NULL;

@@ -104,7 +104,7 @@ class DreamkasClientTest extends ServerMock {
                 false,
                 null,
                 Lists.newArrayList("AB_1234", "00000001"),
-                Tax.ZERO_TAX_V1,
+                Tax.NDS_0_V1,
                 LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER),
                 LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER));
 
@@ -118,7 +118,7 @@ class DreamkasClientTest extends ServerMock {
                 true,
                 null,
                 Lists.newArrayList("AB_5834", "00000008"),
-                Tax.TEN_TAX_V1,
+                Tax.NDS_10_V1,
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER),
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER));
 
@@ -169,10 +169,10 @@ class DreamkasClientTest extends ServerMock {
 
         assertEquals(4, departments.size());
         assertThat(departments, hasItems(
-                new Department("Хлебобулочные изделия", Tax.ZERO_TAX_V1, 1L),
-                new Department("Мясные изделия", Tax.TWENTY_TAX_V1, 2L),
+                new Department("Хлебобулочные изделия", Tax.NDS_0_V1, 1L),
+                new Department("Мясные изделия", Tax.NDS_20_V1, 2L),
                 new Department("Молочная продукция", Tax.NDS_10, 3L),
-                new Department("Бытовая химия", Tax.MIXED_V1, 4L)
+                new Department("Бытовая химия", Tax.NDS_MIXED_V1, 4L)
         ));
     }
 }
