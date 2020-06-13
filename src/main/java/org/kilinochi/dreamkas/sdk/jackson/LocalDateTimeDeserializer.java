@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
  * @author arman.shamenov
  */
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
-    public static final LocalDateTime START_DAY = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
 
     private static final DateTimeFormatter ISO_1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter ISO_2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -33,7 +32,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
         String value = p.getValueAsString();
 
         if (value == null || value.isEmpty()) {
-            return START_DAY;
+            return LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toLocalDateTime();
         }
 
         if (value.endsWith("Z")) {
