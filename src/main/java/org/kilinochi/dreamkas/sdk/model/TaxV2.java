@@ -31,7 +31,11 @@ public enum TaxV2 implements DreamkasEnum {
     /**
      * НДС 20 / 120%
      */
-    NDS_20_CALCULATED("NDS_20_CALCULATED");
+    NDS_20_CALCULATED("NDS_20_CALCULATED"),
+    /**
+     * Смешанный НДС в категории
+     */
+    NDS_MIXED("NDS_MIXED");
 
     private final String value;
 

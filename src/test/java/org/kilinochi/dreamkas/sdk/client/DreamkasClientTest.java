@@ -1,6 +1,7 @@
 package org.kilinochi.dreamkas.sdk.client;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -10,11 +11,15 @@ import org.kilinochi.dreamkas.sdk.model.ProductList;
 import org.kilinochi.dreamkas.sdk.model.ProductType;
 import org.kilinochi.dreamkas.sdk.model.ProductTypeV2;
 import org.kilinochi.dreamkas.sdk.model.ProductV2;
+import org.kilinochi.dreamkas.sdk.model.Receipt;
+import org.kilinochi.dreamkas.sdk.model.ReceiptQuery;
+import org.kilinochi.dreamkas.sdk.model.ReceiptsList;
 import org.kilinochi.dreamkas.sdk.model.Tax;
 import org.kilinochi.dreamkas.sdk.model.TaxV2;
 import org.kilinochi.dreamkas.sdk.queries.GetProductQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductV2Query;
 import org.kilinochi.dreamkas.sdk.queries.GetProductsQuery;
+import org.kilinochi.dreamkas.sdk.queries.GetReceiptsQuery;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,14 +29,13 @@ import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
 class DreamkasClientTest extends ServerMock {
 
-    static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     @Test
     void getProductTest() throws ExecutionException, InterruptedException {
@@ -119,8 +123,33 @@ class DreamkasClientTest extends ServerMock {
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER),
                 LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER));
 
-
         assertEquals(2, products.size());
         assertThat(products, hasItems(product1, product2));
+    }
+
+    @Test
+    void getReceiptsTest() throws ExecutionException, InterruptedException {
+        System.setProperty(ENDPOINT_KEY, ENDPOINT);
+
+        server.stubFor(
+                get(urlEqualTo("/api/receipts?from=2017-10-13T14%3A15%3A01.239Z&to=2017-10-14T14%3A15%3A01.239Z&limit=1&offset=0&devices=1%2C2"))
+                        .willReturn(aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("json/receipts.json")));
+
+        ReceiptsList receiptsList = new GetReceiptsQuery(client)
+                .from("2017-10-13T14:15:01.239Z")
+                .to("2017-10-14T14:15:01.239Z")
+                .limit(1L)
+                .offset(0L)
+                .devices(Sets.newHashSet("1", "2"))
+                .execute()
+                .get();
+        List<Receipt> data = receiptsList.getData();
+        ReceiptQuery receiptQuery = receiptsList.getReceiptQuery();
+
+        assertEquals(1, data.size());
+        assertThat(receiptQuery, notNullValue());
     }
 }

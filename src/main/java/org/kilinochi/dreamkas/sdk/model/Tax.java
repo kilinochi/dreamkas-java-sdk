@@ -36,9 +36,14 @@ public enum Tax implements DreamkasEnum {
     ONE_HUNDRED_AND_TWENTY("one_hundred_and_twenty"),
 
     /**
-     * null
+     * нет НДС
      */
-    NULL("null")
+    NULL("null"),
+
+    /**
+     * смешанный НДС (в категории)
+     */
+    HYBRID("hybrid")
     ;
 
     private final String value;
@@ -67,6 +72,10 @@ public enum Tax implements DreamkasEnum {
 
         String value;
         switch (count) {
+            case -1: {
+                value = "hybrid";
+                break;
+            }
             case 0: {
                 value = "zero";
                 break;

@@ -1,60 +1,50 @@
 {
-  "query": {
-    "from": "2017-10-13T14:15:01.239Z",
-    "to": "2017-10-14T14:15:01.239Z",
-    "limit": 0,
-    "offset": 0
-  },
-  "data": [
+  "id": 0,
+  "type": "SALE",
+  "amount": 382500,
+  "discount": 0,
+  "deviceId": 329,
+  "shopId": 5328,
+  "operationId": "5ce54a654adbce65466a3b5a",
+  "shiftId": 44,
+  "number": 1,
+  "localDate": "2018-01-23 20:52:02",
+  "date": "2017-01-23T17:52:02.000Z",
+  "payments": [
     {
-      "id": 0,
-      "type": "SALE",
-      "amount": 382500,
-      "discount": 0,
-      "deviceId": 329,
-      "shopId": 5328,
-      "operationId": "5ce54a654adbce65466a3b5a",
-      "shiftId": 44,
-      "number": 1,
-      "localDate": "2018-01-23 20:52:02",
-      "date": "2017-01-23T17:52:02.000Z",
-      "payments": [
-        {
-          "type": "CASH",
-          "amount": 382500
-        }
-      ],
-      "positions": [
-        {
-          "id": "2e21d75a-70d4-4a9f-b2e9-d69cf93b83cb",
-          "name": "Булочка с маком",
-          "type": "COUNTABLE",
-          "quantity": 1000,
-          "price": 6380,
-          "discount": 0,
-          "barcode": "58523523657",
-          "exciseBarcode": "59520101001208381",
-          "vendorCode": "АРТ-87499-847",
-          "tax": "NDS_20",
-          "departmentId": 553
-        }
-      ],
-      "cashier": {
-        "tabNumber": "88990",
-        "name": "Иванов Петр Олегович",
-        "inn": "1234567890",
-        "card": "046563",
-        "password": "31544A084DBE2595147669E6088AF2413374A87D880432961CCDA1E729F6F913",
-        "role": "Продавец-консультант",
-        "permissions": [
-          "SALE"
-        ]
-      },
-      "checkURL": "www.nalog.ru",
-      "fiscalDocumentNumber": "200",
-      "fiscalDocumentSign": "2147483647",
-      "fnNumber": "9999078900001712",
-      "registryNumber": "0000000001056589"
+      "type": "CASH",
+      "amount": 382500
     }
-  ]
+  ],
+  "positions": [
+    {
+      "id": "2e21d75a-70d4-4a9f-b2e9-d69cf93b83cb",
+      "name": "Булочка с маком",
+      "type": "COUNTABLE",
+      "quantity": 1000,
+      "price": 6380,
+      "discount": 0,
+      "barcode": "58523523657",
+      "exciseBarcode": "59520101001208381",
+      "vendorCode": "АРТ-87499-847",
+      "tax": "NDS_20",
+      "departmentId": 553
+    }
+  ],
+  "cashier": {
+    "tabNumber": "88990",
+    "name": "Иванов Петр Олегович",
+    "inn": "1234567890",
+    "card": "046563",
+    "password": "31544A084DBE2595147669E6088AF2413374A87D880432961CCDA1E729F6F913",
+    "role": "Продавец-консультант",
+    "permissions": [
+      "SALE"
+    ]
+  },
+  "checkURL": "www.nalog.ru",
+  "fiscalDocumentNumber": "200",
+  "fiscalDocumentSign": "2147483647",
+  "fnNumber": "9999078900001712",
+  "registryNumber": "0000000001056589"
 }

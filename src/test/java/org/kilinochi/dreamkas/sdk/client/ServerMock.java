@@ -19,7 +19,7 @@ abstract class ServerMock {
     protected final DreamkasClient client = new DreamkasClient(transport, serializer) {
         @Override
         public String getEndpoint() {
-            return System.getProperty(ENDPOINT_KEY);
+            return System.getProperty(ENDPOINT_KEY, ENDPOINT);
         }
     };
 

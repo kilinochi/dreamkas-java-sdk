@@ -7,33 +7,30 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.function.Supplier;
 
 /**
  * @author arman.shamenov
  */
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
-    private final Supplier<DateTimeFormatter> formatter;
+    private static final DateTimeFormatter ISO_1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter ISO_2 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public LocalDateTimeDeserializer(Class<LocalDateTime> src,
-                                     Supplier<DateTimeFormatter> formatter) {
+
+    public LocalDateTimeDeserializer(Class<LocalDateTime> src) {
         super(src);
-        this.formatter = formatter;
     }
 
     public LocalDateTimeDeserializer() {
-        this(LocalDateTime.class, () -> DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
-    }
-
-    // yyyy-MM-dd'T'HH:mm:ss.SSS default
-
-    public LocalDateTimeDeserializer(Class<LocalDateTime> src) {
-        this(src, () -> DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+        this(LocalDateTime.class);
     }
 
     @Override
     public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String value = p.getValueAsString();
-        return LocalDateTime.parse(value, formatter.get());
+
+        if (value.endsWith("Z")) {
+            return LocalDateTime.parse(value, ISO_2);
+        }
+        return LocalDateTime.parse(value, ISO_1);
     }
 }
