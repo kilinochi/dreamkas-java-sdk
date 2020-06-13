@@ -10,7 +10,7 @@ public enum EncashmentType implements DreamkasEnum {
     /**
      * Внесение денег
      */
-    MONEY_ID("money_in"),
+    MONEY_IN("money_in"),
     /**
      * Изъятие денег
      */

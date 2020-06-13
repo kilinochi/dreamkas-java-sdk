@@ -7,6 +7,8 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.kilinochi.dreamkas.sdk.model.Department;
 import org.kilinochi.dreamkas.sdk.model.DepartmentList;
+import org.kilinochi.dreamkas.sdk.model.Encashment;
+import org.kilinochi.dreamkas.sdk.model.EncashmentsList;
 import org.kilinochi.dreamkas.sdk.model.Price;
 import org.kilinochi.dreamkas.sdk.model.Product;
 import org.kilinochi.dreamkas.sdk.model.ProductList;
@@ -16,6 +18,7 @@ import org.kilinochi.dreamkas.sdk.model.Receipt;
 import org.kilinochi.dreamkas.sdk.model.ReceiptsList;
 import org.kilinochi.dreamkas.sdk.model.Tax;
 import org.kilinochi.dreamkas.sdk.queries.GetDepartmentsQuery;
+import org.kilinochi.dreamkas.sdk.queries.GetEncashmentsQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductsQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetReceiptsQuery;
@@ -174,5 +177,31 @@ class DreamkasClientTest extends ServerMock {
                 new Department("Молочная продукция", Tax.NDS_10, 3L),
                 new Department("Бытовая химия", Tax.NDS_MIXED_V1, 4L)
         ));
+    }
+
+    @Test
+    void getEncashmentTest() throws ExecutionException, InterruptedException {
+        System.setProperty(ENDPOINT_KEY, ENDPOINT);
+
+        server.stubFor(
+                get(urlEqualTo("/api/encashments?from=2017-10-13T14%3A15%3A01.239Z&to=2017-10-14T14%3A15%3A01.239Z&limit=1&offset=0&devices=1%2C2"))
+                    .willReturn(aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBodyFile("json/encashments.json")));
+
+        EncashmentsList encashmentsList = new GetEncashmentsQuery(client)
+                .from("2017-10-13T14:15:01.239Z")
+                .to("2017-10-14T14:15:01.239Z")
+                .limit(1L)
+                .offset(0L)
+                .devices(Sets.newHashSet("1", "2"))
+                .execute()
+                .get();
+
+        List<Encashment> data = encashmentsList.getData();
+        QueryResponse queryResponse = encashmentsList.getQueryResponse();
+
+
     }
 }

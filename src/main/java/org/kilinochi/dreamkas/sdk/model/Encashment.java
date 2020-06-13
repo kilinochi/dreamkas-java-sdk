@@ -6,7 +6,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -28,9 +27,9 @@ public class Encashment implements DreamkasSerializable {
     private @Valid final Cashier cashier;
     @NotNull
     private @Valid final Long sum;
-    @Nullable
+    @NotNull
     private @Valid final LocalDateTime localDate;
-    @Nullable
+    @NotNull
     private @Valid final LocalDateTime date;
 
     @JsonCreator
@@ -40,8 +39,8 @@ public class Encashment implements DreamkasSerializable {
                       @NotNull @JsonProperty("shiftId") String shiftId,
                       @NotNull @JsonProperty("cashier") Cashier cashier,
                       @NotNull @JsonProperty("sum") Long sum,
-                      @Nullable @JsonProperty("localDate") LocalDateTime localDate,
-                      @Nullable @JsonProperty("date") LocalDateTime date) {
+                      @NotNull @JsonProperty("localDate") LocalDateTime localDate,
+                      @NotNull @JsonProperty("date") LocalDateTime date) {
         this.deviceId = deviceId;
         this.shopId = shopId;
         this.type = type;
@@ -83,12 +82,12 @@ public class Encashment implements DreamkasSerializable {
     }
 
     @JsonProperty("localDate")
-    public @Nullable LocalDateTime getLocalDate() {
+    public @NotNull LocalDateTime getLocalDate() {
         return localDate;
     }
 
     @JsonProperty("date")
-    public @Nullable LocalDateTime getDate() {
+    public @NotNull LocalDateTime getDate() {
         return date;
     }
 
