@@ -1,9 +1,9 @@
 package org.kilinochi.dreamkas.sdk.queries;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kilinochi.dreamkas.sdk.client.DreamkasClient;
 import org.kilinochi.dreamkas.sdk.client.DreamkasTransportClient;
-import org.kilinochi.dreamkas.sdk.exception.ClientException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +12,11 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author arman.shamenov
  */
-public class DreamkasQuery<T>  {
+public class DreamkasQuery<T> {
     private final DreamkasClient dreamkasClient;
     private final String url;
     private final Class<T> responseType;
+    @Nullable
     private final Object body;
     private final DreamkasTransportClient.Method method;
 
@@ -24,7 +25,7 @@ public class DreamkasQuery<T>  {
     public DreamkasQuery(
             DreamkasClient client,
             String url,
-            Object body,
+            @Nullable Object body,
             Class<T> responseType,
             DreamkasTransportClient.Method method) {
         this.dreamkasClient = client;
@@ -53,6 +54,7 @@ public class DreamkasQuery<T>  {
         return params;
     }
 
+    @Nullable
     public Object getBody() {
         return body;
     }
@@ -62,13 +64,7 @@ public class DreamkasQuery<T>  {
     }
 
     public CompletableFuture<T> execute() {
-        try {
-            return dreamkasClient.newCall(this);
-        } catch (ClientException e) {
-            CompletableFuture<T> future = new CompletableFuture<>();
-            future.completeExceptionally(e);
-            return future;
-        }
+        return dreamkasClient.newCall(this);
     }
 
     static String substitute(String pathTemplate, Object... substitutions) {

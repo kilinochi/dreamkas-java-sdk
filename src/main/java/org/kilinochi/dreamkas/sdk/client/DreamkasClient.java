@@ -8,6 +8,7 @@ import org.kilinochi.dreamkas.sdk.exception.SerializationException;
 import org.kilinochi.dreamkas.sdk.exception.ServerException;
 import org.kilinochi.dreamkas.sdk.jackson.JacksonSerializer;
 import org.kilinochi.dreamkas.sdk.jackson.Serializer;
+import org.kilinochi.dreamkas.sdk.model.Error;
 import org.kilinochi.dreamkas.sdk.queries.DreamkasQuery;
 import org.kilinochi.dreamkas.sdk.queries.QueryParam;
 
@@ -42,14 +43,14 @@ public class DreamkasClient {
         return new DreamkasClient(transport, serializer);
     }
 
-    public <T> CompletableFuture<T> newCall(DreamkasQuery<T> query) throws ClientException {
+    public <T> CompletableFuture<T> newCall(DreamkasQuery<T> query) {
         DreamkasTransportClient.Method method = query.getMethod();
         URI uri;
 
         try {
             uri = buildUrl(query);
         } catch (URISyntaxException e) {
-            throw new ClientException(e);
+            throw new ClientException(404, "Not found");
         }
 
         CompletableFuture<ClientResponse> call;
@@ -113,7 +114,7 @@ public class DreamkasClient {
         return transport;
     }
 
-    private <T> T handleResponse(ClientResponse response, Class<T> classType) throws ServerException {
+    private <T> T handleResponse(ClientResponse response, Class<T> classType) throws ServerException, ClientException {
         String responseBody = response.getBody();
 
         int statusCode = response.getStatusCode();
@@ -124,7 +125,7 @@ public class DreamkasClient {
 
         try {
 
-            if (response.getStatusCode() / 100 == 2) {
+            if (statusCode / 100 == 2) {
                 return serializer.deserialize(responseBody, classType);
             }
         } catch (SerializationException e) {
@@ -138,6 +139,10 @@ public class DreamkasClient {
         }
 
         String message = error.getMessage();
+
+        if (statusCode / 100 == 4) {
+            throw new ClientException(statusCode, message);
+        }
 
         throw new ServerException(message);
     }

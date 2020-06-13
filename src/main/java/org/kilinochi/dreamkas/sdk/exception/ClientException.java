@@ -3,7 +3,7 @@ package org.kilinochi.dreamkas.sdk.exception;
 /**
  * @author arman.shamenov
  */
-public class ClientException extends Exception {
+public class ClientException extends RuntimeException {
     private final int code;
 
     public ClientException(Throwable cause) {

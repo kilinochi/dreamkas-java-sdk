@@ -88,9 +88,10 @@ class DreamkasHttpTransportClient implements DreamkasTransportClient {
 
         String uriPath = uri.getPath();
         String pathEnd = uriPath.substring(uriPath.lastIndexOf("/")).replace("/", "");
-        StringBuilder sb = new StringBuilder(body);
-        return sb.insert(0, "{\"" + pathEnd + "\": ")
-                .append("\n}").toString();
+        return new StringBuilder(body)
+                .insert(0, "{\"" + pathEnd + "\": ")
+                .append("\n}")
+                .toString();
     }
 
     private static HttpRequest.BodyPublisher wrapBody(@Nullable String body) {
