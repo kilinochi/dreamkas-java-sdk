@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Касса 1",
+    "groupId": 1,
+    "sort": 20,
+    "id": 1,
+    "timezoneOffset": 4
+  },
+  {
+    "name": "Касса 2",
+    "groupId": 2,
+    "sort": 25,
+    "id": 2,
+    "timezoneOffset": 4
+  }
+]

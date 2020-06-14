@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author arman.shamenov
  */
-public class DreamkasQuery<T> {
+public abstract class DreamkasQuery<T> {
     private final DreamkasClient dreamkasClient;
     private final String url;
     private final Class<T> responseType;
@@ -22,7 +22,7 @@ public class DreamkasQuery<T> {
 
     private List<QueryParam<?>> params;
 
-    public DreamkasQuery(
+    protected DreamkasQuery(
             DreamkasClient client,
             String url,
             @Nullable Object body,

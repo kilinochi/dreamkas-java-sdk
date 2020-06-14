@@ -46,7 +46,7 @@ public enum ProductType implements DreamkasEnum {
     @Override
     @JsonValue
     public String getValue() {
-        return value;
+        return value.toUpperCase();
     }
 
     @Override

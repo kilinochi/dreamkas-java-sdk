@@ -23,7 +23,7 @@ public class TaxDeserializer extends StdDeserializer<Tax> {
     }
 
     @Override
-    public Tax deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public Tax deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonToken currentToken = jp.getCurrentToken();
 
         if (currentToken.isNumeric()) {

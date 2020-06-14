@@ -28,7 +28,7 @@ public class NewProductBody implements DreamkasSerializable {
     @NotNull
     private @Valid final Long quantity;
     @NotNull
-    private @Valid final List<Price> prices;
+    private final List<@Valid Price> prices;
     @NotNull
     private @Valid final Boolean isMarked;
     @Nullable

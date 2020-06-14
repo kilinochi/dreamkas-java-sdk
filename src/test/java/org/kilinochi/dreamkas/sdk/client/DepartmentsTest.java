@@ -5,7 +5,10 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.kilinochi.dreamkas.sdk.model.Department;
 import org.kilinochi.dreamkas.sdk.model.DepartmentList;
+import org.kilinochi.dreamkas.sdk.model.NewDepartmentBody;
 import org.kilinochi.dreamkas.sdk.model.Tax;
+import org.kilinochi.dreamkas.sdk.queries.CreateDepartmentQuery;
+import org.kilinochi.dreamkas.sdk.queries.GetDepartmentQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetDepartmentsQuery;
 
 import java.util.List;
@@ -18,6 +21,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
 class DepartmentsTest extends UnitTestBase {
+
+    @Test
+    void getDepartmentTest() throws ExecutionException, InterruptedException {
+
+        server.stubFor(
+                get(urlEqualTo("/api/departments/1"))
+                        .willReturn(aResponse()
+                                .withStatus(200)
+                                .withHeader("Content-Type", "application/json")
+                                .withBodyFile("json/department.json")));
+
+        Department department = new GetDepartmentQuery(client, 1L).execute().get();
+
+        assertEquals(new Department("Хлебобулочные изделия", Tax.NDS_0_V1, 1L), department);
+    }
 
     @Test
     void getDepartmentsTest() throws ExecutionException, InterruptedException {
@@ -40,5 +58,23 @@ class DepartmentsTest extends UnitTestBase {
                 new Department("Молочная продукция", Tax.NDS_10, 3L),
                 new Department("Бытовая химия", Tax.NDS_MIXED_V1, 4L)
         ));
+    }
+
+    @Test
+    void createDepartmentTest() throws ExecutionException, InterruptedException {
+        server.stubFor(
+                post(urlEqualTo("/api/departments"))
+                        .withRequestBody(equalToJson("{\n" +
+                                "  \"name\": \"Хлебобулочные изделия\",\n" +
+                                "  \"tax\": 0\n" +
+                                "}"))
+                        .willReturn(aResponse()
+                                .withStatus(201)
+                                .withHeader("Content-Type", "application/json")
+                                .withBodyFile("json/department.json")));
+
+        Department department = new CreateDepartmentQuery(client, new NewDepartmentBody("Хлебобулочные изделия", Tax.NDS_0_V1)).execute().get();
+
+        assertEquals(new Department("Хлебобулочные изделия", Tax.NDS_0_V1, 1L), department);
     }
 }

@@ -128,22 +128,41 @@ class ProductsTest extends UnitTestBase {
         System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
         server.stubFor(post(urlEqualTo("/api/products"))
+                .withRequestBody(equalToJson("{\n" +
+                        "  \"type\": \"COUNTABLE\",\n" +
+                        "  \"departmentId\": 0,\n" +
+                        "  \"quantity\": 1000,\n" +
+                        "  \"prices\": [\n" +
+                        "    {\n" +
+                        "      \"deviceId\": 1,\n" +
+                        "      \"value\": 1200\n" +
+                        "    }\n" +
+                        "  ],\n" +
+                        "  \"isMarked\": false,\n" +
+                        "  \"barcodes\": [\n" +
+                        "    \"AB_1234\",\n" +
+                        "    \"00000001\"\n" +
+                        "  ],\n" +
+                        "  \"tax\": 0\n" +
+                        "}"))
                 .willReturn(aResponse()
                         .withStatus(201)
                         .withHeader("Content-Type", "application/json")
-                        .withBodyFile("json/productCreated.json")));
+                        .withBody("{\n" +
+                                "  \"id\": \"b0381fe4-4428-4dcb-8169-c8bbcab59626\"\n" +
+                                "}")));
 
         CreateProductResult productResult = new CreateProductQuery(client, new NewProductBody(
                 null,
-                "Новый товар",
-                ProductType.COUNTABLE,
-                1L,
-                1000L,
-                Collections.singletonList(new Price(2L, 1400L)),
-                true,
                 null,
-                Collections.singletonList("AAABB"),
-                Tax.NDS_10)).execute().get();
+                ProductType.COUNTABLE,
+                0L,
+                1000L,
+                Collections.singletonList(new Price(1L, 1200L)),
+                false,
+                null,
+                Lists.newArrayList("AB_1234", "00000001"),
+                Tax.NDS_0_V1)).execute().get();
 
         assertEquals(UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626"), productResult.getUuid());
     }

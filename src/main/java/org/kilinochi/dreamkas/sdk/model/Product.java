@@ -35,7 +35,7 @@ public class Product implements DreamkasSerializable {
     @Nullable
     private final Meta meta;
     @NotNull
-    private @Valid final List<String> barcodes;
+    private final List<@Valid String> barcodes;
     @NotNull
     private @Valid final Tax tax;
     @NotNull
