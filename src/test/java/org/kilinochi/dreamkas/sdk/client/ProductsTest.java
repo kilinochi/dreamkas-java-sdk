@@ -1,41 +1,35 @@
 package org.kilinochi.dreamkas.sdk.client;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
-import org.kilinochi.dreamkas.sdk.model.Department;
-import org.kilinochi.dreamkas.sdk.model.DepartmentList;
-import org.kilinochi.dreamkas.sdk.model.Encashment;
-import org.kilinochi.dreamkas.sdk.model.EncashmentsList;
+import org.kilinochi.dreamkas.sdk.model.CreateProductResult;
+import org.kilinochi.dreamkas.sdk.model.NewProductBody;
 import org.kilinochi.dreamkas.sdk.model.Price;
 import org.kilinochi.dreamkas.sdk.model.Product;
 import org.kilinochi.dreamkas.sdk.model.ProductList;
 import org.kilinochi.dreamkas.sdk.model.ProductType;
-import org.kilinochi.dreamkas.sdk.model.QueryResponse;
-import org.kilinochi.dreamkas.sdk.model.Receipt;
-import org.kilinochi.dreamkas.sdk.model.ReceiptsList;
 import org.kilinochi.dreamkas.sdk.model.Tax;
-import org.kilinochi.dreamkas.sdk.queries.GetDepartmentsQuery;
-import org.kilinochi.dreamkas.sdk.queries.GetEncashmentsQuery;
+import org.kilinochi.dreamkas.sdk.queries.CreateProductQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductQuery;
 import org.kilinochi.dreamkas.sdk.queries.GetProductsQuery;
-import org.kilinochi.dreamkas.sdk.queries.GetReceiptsQuery;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
-class DreamkasClientTest extends ServerMock {
+class ProductsTest extends UnitTestBase {
 
     final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
@@ -66,7 +60,7 @@ class DreamkasClientTest extends ServerMock {
         System.setProperty(ENDPOINT_KEY, ENDPOINT_V2);
 
         server.stubFor(get(urlEqualTo("/api/v2/products/b0381fe4-4428-4dcb-8169-c8bbcab59626"))
-                    .willReturn(aResponse()
+                .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBodyFile("json/productV2.json")));
@@ -88,10 +82,10 @@ class DreamkasClientTest extends ServerMock {
         System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
         server.stubFor(get(urlEqualTo("/api/products?limit=2&offset=0"))
-                    .willReturn(aResponse()
-                            .withStatus(200)
-                            .withHeader("Content-Type", "application/json")
-                            .withBodyFile("json/products.json")));
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("json/products.json")));
 
         GetProductsQuery query = new GetProductsQuery(client).limit(2).offset(0);
         ProductList productList = query.execute().get();
@@ -130,78 +124,27 @@ class DreamkasClientTest extends ServerMock {
     }
 
     @Test
-    void getReceiptsTest() throws ExecutionException, InterruptedException {
+    void createProductTest() throws ExecutionException, InterruptedException {
         System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
-        server.stubFor(
-                get(urlEqualTo("/api/receipts?from=2017-10-13T14%3A15%3A01.239Z&to=2017-10-14T14%3A15%3A01.239Z&limit=1&offset=0&devices=1%2C2"))
-                        .willReturn(aResponse()
-                            .withStatus(200)
-                            .withHeader("Content-Type", "application/json")
-                            .withBodyFile("json/receipts.json")));
+        server.stubFor(post(urlEqualTo("/api/products"))
+                .willReturn(aResponse()
+                        .withStatus(201)
+                        .withHeader("Content-Type", "application/json")
+                        .withBodyFile("json/productCreated.json")));
 
-        ReceiptsList receiptsList = new GetReceiptsQuery(client)
-                .from("2017-10-13T14:15:01.239Z")
-                .to("2017-10-14T14:15:01.239Z")
-                .limit(1L)
-                .offset(0L)
-                .devices(Sets.newHashSet("1", "2"))
-                .execute()
-                .get();
-        List<Receipt> data = receiptsList.getData();
-        QueryResponse queryResponse = receiptsList.getQueryResponse();
+        CreateProductResult productResult = new CreateProductQuery(client, new NewProductBody(
+                null,
+                "Новый товар",
+                ProductType.COUNTABLE,
+                1L,
+                1000L,
+                Collections.singletonList(new Price(2L, 1400L)),
+                true,
+                null,
+                Collections.singletonList("AAABB"),
+                Tax.NDS_10)).execute().get();
 
-        assertEquals(1, data.size());
-        assertThat(queryResponse, notNullValue());
-    }
-
-    @Test
-    void getDepartmentsTest() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT);
-
-        server.stubFor(
-                get(urlEqualTo("/api/departments"))
-                        .willReturn(aResponse()
-                                .withStatus(200)
-                                .withHeader("Content-Type", "application/json")
-                                .withBodyFile("json/departments.json")));
-
-        DepartmentList departmentList = new GetDepartmentsQuery(client).execute().get();
-
-        List<Department> departments = departmentList.getDepartments();
-
-        assertEquals(4, departments.size());
-        assertThat(departments, hasItems(
-                new Department("Хлебобулочные изделия", Tax.NDS_0_V1, 1L),
-                new Department("Мясные изделия", Tax.NDS_20_V1, 2L),
-                new Department("Молочная продукция", Tax.NDS_10, 3L),
-                new Department("Бытовая химия", Tax.NDS_MIXED_V1, 4L)
-        ));
-    }
-
-    @Test
-    void getEncashmentTest() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT);
-
-        server.stubFor(
-                get(urlEqualTo("/api/encashments?from=2017-10-13T14%3A15%3A01.239Z&to=2017-10-14T14%3A15%3A01.239Z&limit=1&offset=0&devices=1%2C2"))
-                    .willReturn(aResponse()
-                            .withStatus(200)
-                            .withHeader("Content-Type", "application/json")
-                            .withBodyFile("json/encashments.json")));
-
-        EncashmentsList encashmentsList = new GetEncashmentsQuery(client)
-                .from("2017-10-13T14:15:01.239Z")
-                .to("2017-10-14T14:15:01.239Z")
-                .limit(1L)
-                .offset(0L)
-                .devices(Sets.newHashSet("1", "2"))
-                .execute()
-                .get();
-
-        List<Encashment> data = encashmentsList.getData();
-        QueryResponse queryResponse = encashmentsList.getQueryResponse();
-
-
+        assertEquals(UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626"), productResult.getUuid());
     }
 }

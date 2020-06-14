@@ -9,18 +9,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 /**
  * @author arman.shamenov
  */
-public class Product implements DreamkasSerializable {
+public class NewProductBody implements DreamkasSerializable {
 
-    @NotNull
+    @Nullable
     private @Valid final UUID id;
-    @NotNull
+    @Nullable
     private @Valid final String name;
     @NotNull
     private @Valid final ProductType type;
@@ -38,15 +37,11 @@ public class Product implements DreamkasSerializable {
     private @Valid final List<String> barcodes;
     @NotNull
     private @Valid final Tax tax;
-    @NotNull
-    private @Valid final LocalDateTime createdAt;
-    @NotNull
-    private @Valid final LocalDateTime updatedAt;
 
     @JsonCreator
-    public Product(
-            @NotNull @JsonProperty("id") UUID id,
-            @NotNull @JsonProperty("name") String name,
+    public NewProductBody(
+            @Nullable @JsonProperty("id") UUID id,
+            @Nullable @JsonProperty("name") String name,
             @NotNull @JsonProperty("type") ProductType type,
             @NotNull @JsonProperty("departmentId") Long departmentId,
             @NotNull @JsonProperty("quantity") Long quantity,
@@ -54,9 +49,7 @@ public class Product implements DreamkasSerializable {
             @NotNull @JsonProperty("isMarked") Boolean isMarked,
             @Nullable @JsonProperty("meta") Meta meta,
             @NotNull @JsonProperty("barcodes") List<String> barcodes,
-            @NotNull @JsonProperty("tax") Tax tax,
-            @NotNull @JsonProperty("createdAt") LocalDateTime createdAt,
-            @NotNull @JsonProperty("updatedAt") LocalDateTime updatedAt) {
+            @NotNull @JsonProperty("tax") Tax tax) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -67,11 +60,9 @@ public class Product implements DreamkasSerializable {
         this.meta = meta;
         this.barcodes = barcodes;
         this.tax = tax;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("name")
     public String getName() {
         return name;
@@ -101,7 +92,7 @@ public class Product implements DreamkasSerializable {
         return type;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("id")
     public UUID getId() {
         return id;
@@ -131,18 +122,6 @@ public class Product implements DreamkasSerializable {
         return tax;
     }
 
-    @NotNull
-    @JsonProperty("createdAt")
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    @NotNull
-    @JsonProperty("updatedAt")
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -156,8 +135,6 @@ public class Product implements DreamkasSerializable {
                 .append("meta", meta)
                 .append("barcodes", barcodes)
                 .append("tax", tax)
-                .append("createdAt", createdAt)
-                .append("updatedAt", updatedAt)
                 .toString();
     }
 
@@ -171,7 +148,7 @@ public class Product implements DreamkasSerializable {
             return false;
         }
 
-        Product product = (Product) o;
+        NewProductBody product = (NewProductBody) o;
 
         return new EqualsBuilder()
                 .append(id, product.id)
@@ -184,8 +161,6 @@ public class Product implements DreamkasSerializable {
                 .append(meta, product.meta)
                 .append(barcodes, product.barcodes)
                 .append(tax, product.tax)
-                .append(createdAt, product.createdAt)
-                .append(updatedAt, product.updatedAt)
                 .isEquals();
     }
 
@@ -202,8 +177,6 @@ public class Product implements DreamkasSerializable {
                 .append(meta)
                 .append(barcodes)
                 .append(tax)
-                .append(createdAt)
-                .append(updatedAt)
                 .toHashCode();
     }
 }

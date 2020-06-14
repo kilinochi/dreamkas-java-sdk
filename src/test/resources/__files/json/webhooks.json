@@ -1,0 +1,28 @@
+[
+  {
+    "url": "http://localhost:10000/api/webhooks/80258c8a-7fd3-4000-8c64-acb1ba86fff9",
+    "types": {
+      "products": true,
+      "devices": true,
+      "encashments": true,
+      "receipts": true,
+      "shifts": true,
+      "operations": true,
+      "deviceRegistrations": true
+    },
+    "id": "80258c8a-7fd3-4000-8c64-acb1ba86fff9"
+  },
+  {
+    "url": "http://localhost:10000/api/webhooks/786c936a-2963-46b1-9544-ee7e6ab24bef",
+    "types": {
+      "products": false,
+      "devices": false,
+      "encashments": false,
+      "receipts": false,
+      "shifts": false,
+      "operations": false,
+      "deviceRegistrations": false
+    },
+    "id": "786c936a-2963-46b1-9544-ee7e6ab24bef"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "url": "http://localhost:10000/api/webhooks/80258c8a-7fd3-4000-8c64-acb1ba86fff9",
+  "types": {
+    "products": false,
+    "devices": false,
+    "encashments": false,
+    "receipts": false,
+    "shifts": false,
+    "operations": false,
+    "deviceRegistrations": false
+  },
+  "id": "80258c8a-7fd3-4000-8c64-acb1ba86fff9"
+}
