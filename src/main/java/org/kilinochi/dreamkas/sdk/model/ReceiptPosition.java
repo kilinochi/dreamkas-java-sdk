@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -32,8 +33,8 @@ public class ReceiptPosition implements DreamkasSerializable {
     private final @Valid String exciseBarcode;
     @NotNull
     private final @Valid String vendorCode;
-    @NotNull
-    private final @Valid Tax tax;
+    @Nullable
+    private final Tax tax;
     @NotNull
     private final @Valid Long departmentId;
 
@@ -47,7 +48,7 @@ public class ReceiptPosition implements DreamkasSerializable {
                            @NotNull @JsonProperty("barcode") String barcode,
                            @NotNull @JsonProperty("exciseBarcode") String exciseBarcode,
                            @NotNull @JsonProperty("vendorCode") String vendorCode,
-                           @NotNull @JsonProperty("tax") Tax tax,
+                           @Nullable @JsonProperty("tax") Tax tax,
                            @NotNull @JsonProperty("departmentId") Long departmentId) {
         this.id = id;
         this.name = name;
@@ -113,7 +114,7 @@ public class ReceiptPosition implements DreamkasSerializable {
     }
 
     @JsonProperty("tax")
-    public @NotNull Tax getTax() {
+    public @Nullable Tax getTax() {
         return tax;
     }
 

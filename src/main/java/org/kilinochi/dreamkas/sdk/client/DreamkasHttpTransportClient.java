@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * @author arman.shamenov
  */
-class DreamkasHttpTransportClient implements DreamkasTransportClient {
+final class DreamkasHttpTransportClient implements DreamkasTransportClient {
 
     private final HttpClient httpClient;
     private final String bearerToken;

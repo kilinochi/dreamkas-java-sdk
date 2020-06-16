@@ -36,8 +36,8 @@ public class Product implements DreamkasSerializable {
     private final Meta meta;
     @NotNull
     private final List<@Valid String> barcodes;
-    @NotNull
-    private @Valid final Tax tax;
+    @Nullable
+    private final Tax tax;
     @NotNull
     private @Valid final LocalDateTime createdAt;
     @NotNull
@@ -54,7 +54,7 @@ public class Product implements DreamkasSerializable {
             @NotNull @JsonProperty("isMarked") Boolean isMarked,
             @Nullable @JsonProperty("meta") Meta meta,
             @NotNull @JsonProperty("barcodes") List<String> barcodes,
-            @NotNull @JsonProperty("tax") Tax tax,
+            @Nullable @JsonProperty("tax") Tax tax,
             @NotNull @JsonProperty("createdAt") LocalDateTime createdAt,
             @NotNull @JsonProperty("updatedAt") LocalDateTime updatedAt) {
         this.id = id;
@@ -125,7 +125,7 @@ public class Product implements DreamkasSerializable {
         return meta;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("tax")
     public Tax getTax() {
         return tax;

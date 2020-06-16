@@ -22,8 +22,13 @@ public class TaxSerializer extends StdSerializer<Tax> {
 
     @Override
     public void serialize(Tax value, JsonGenerator generator, SerializerProvider provider) throws IOException {
+        if (value == null) {
+            generator.writeNull();;
+            return;
+        }
+
         switch (value) {
-            case NULL: {
+            case NDS_NO_TAX_V1: {
                 generator.writeNull();
                 break;
             }

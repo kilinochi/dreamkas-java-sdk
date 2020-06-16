@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author arman.shamenov
  */
-public class ClientResponse {
+public final class ClientResponse {
     private final int statusCode;
     private final String jsonBody;
     private final Map<String, List<String>> headers;

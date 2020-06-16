@@ -24,8 +24,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
@@ -51,7 +50,7 @@ class ProductsTest extends UnitTestBase {
         assertThat(product.getPrices(), hasItems(
                 new Price(1L, 1200L)
         ));
-        assertThat(product.getTax().getClass(), is(Tax.class));
+        assertThat(product.getTax(), is(nullValue()));
         assertThat(product.getType().getClass(), is(ProductType.class));
     }
 
@@ -73,7 +72,7 @@ class ProductsTest extends UnitTestBase {
         assertThat(product.getPrices(), hasItems(
                 new Price(1L, 1200L)
         ));
-        assertThat(product.getTax().getClass(), is(Tax.class));
+        assertThat(product.getTax(), is(notNullValue()));
         assertThat(product.getType().getClass(), is(ProductType.class));
     }
 

@@ -1,13 +1,16 @@
 package org.kilinochi.dreamkas.sdk.model;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * @author arman.shamenov
  */
 public enum Tax implements DreamkasEnum {
 
+    /**
+     * Не облагается НДС (Версия API 1)
+     */
+    NDS_NO_TAX_V1("NDS_NO_TAX_V1"),
     /**
      * 0% НДС (Версия API 1)
      */
@@ -65,12 +68,7 @@ public enum Tax implements DreamkasEnum {
     /**
      * Смешанный НДС в категории (Версия API 2)
      */
-    NDS_MIXED("NDS_MIXED"),
-
-    /**
-     * Null
-     */
-    NULL("NULL");
+    NDS_MIXED("NDS_MIXED");
 
     private final String value;
 
@@ -93,10 +91,7 @@ public enum Tax implements DreamkasEnum {
         return DreamkasEnum.create(Tax.class, text);
     }
 
-    public static Tax create(@Nullable Integer count) {
-        if (count == null) {
-            return NULL;
-        }
+    public static Tax create(Integer count) {
 
         switch (count) {
             case -1: {
@@ -121,7 +116,7 @@ public enum Tax implements DreamkasEnum {
                 return NDS_20_CALCULATED_V1;
             }
             default: {
-                return NULL;
+                return NDS_NO_TAX_V1;
             }
         }
     }

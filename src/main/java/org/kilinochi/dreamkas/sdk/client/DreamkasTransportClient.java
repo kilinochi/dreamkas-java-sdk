@@ -39,5 +39,9 @@ public interface DreamkasTransportClient {
          * Delete method
          */
         DELETE,
+        /*
+         * Patch method
+         */
+        PATCH
     }
 }

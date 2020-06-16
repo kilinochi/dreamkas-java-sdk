@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.validation.Valid;
 
@@ -15,14 +16,14 @@ import javax.validation.Valid;
 public class Department implements DreamkasSerializable {
     @NotNull
     private final @Valid String name;
-    @NotNull
-    private final @Valid Tax tax;
+    @Nullable
+    private final Tax tax;
     @NotNull
     private final @Valid Long id;
 
     @JsonCreator
     public Department(@NotNull @JsonProperty("name") String name,
-                      @NotNull @JsonProperty("tax") Tax tax,
+                      @Nullable @JsonProperty("tax") Tax tax,
                       @NotNull @JsonProperty("id") Long id) {
         this.name = name;
         this.tax = tax;
@@ -40,7 +41,7 @@ public class Department implements DreamkasSerializable {
     }
 
     @JsonProperty("tax")
-    public @NotNull Tax getTax() {
+    public @Nullable Tax getTax() {
         return tax;
     }
 
