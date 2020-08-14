@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.kilinochi.dreamkas.sdk.model.CreateProductResult;
+import org.kilinochi.dreamkas.sdk.model.Department;
+import org.kilinochi.dreamkas.sdk.model.Meta;
 import org.kilinochi.dreamkas.sdk.model.NewProductBody;
 import org.kilinochi.dreamkas.sdk.model.Price;
 import org.kilinochi.dreamkas.sdk.model.Product;
@@ -24,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(JUnitPlatform.class)
@@ -34,7 +36,6 @@ class ProductsTest extends UnitTestBase {
 
     @Test
     void getProductTest() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
         server.stubFor(get(urlEqualTo("/api/products/b0381fe4-4428-4dcb-8169-c8bbcab59626"))
                 .willReturn(aResponse()
@@ -46,39 +47,16 @@ class ProductsTest extends UnitTestBase {
         GetProductQuery query = new GetProductQuery(client, productId);
         Product product = query.execute().get();
 
-        assertEquals(productId, product.getId());
-        assertThat(product.getPrices(), hasItems(
-                new Price(1L, 1200L)
-        ));
-        assertThat(product.getTax(), is(nullValue()));
-        assertThat(product.getType().getClass(), is(ProductType.class));
-    }
+        assertEquals(new Product(
+                UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626"),
+                "Новый товар",
+                "hash-1",
 
-    @Test
-    void getProductV2Test() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT_V2);
-
-        server.stubFor(get(urlEqualTo("/api/v2/products/b0381fe4-4428-4dcb-8169-c8bbcab59626"))
-                .willReturn(aResponse()
-                        .withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBodyFile("json/productV2.json")));
-
-        UUID productId = UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626");
-        GetProductQuery query = new GetProductQuery(client, productId);
-        Product product = query.execute().get();
-
-        assertEquals(productId, product.getId());
-        assertThat(product.getPrices(), hasItems(
-                new Price(1L, 1200L)
-        ));
-        assertThat(product.getTax(), is(notNullValue()));
-        assertThat(product.getType().getClass(), is(ProductType.class));
+        ), product);
     }
 
     @Test
     void getProductsTest() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
         server.stubFor(get(urlEqualTo("/api/products?limit=2&offset=0"))
                 .willReturn(aResponse()
@@ -93,30 +71,22 @@ class ProductsTest extends UnitTestBase {
         Product product1 = new Product(
                 UUID.fromString("b0381fe4-4428-4dcb-8169-c8bbcab59626"),
                 "Новый товар",
+                "hash-1",
                 ProductType.COUNTABLE,
-                0L,
                 1000L,
-                Lists.newArrayList(new Price(1L, 1200L)),
+                Meta.EMPTY,
+                LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER),
+                LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER),
+                "https://html5css.ru/css/img_lights.jpg",
+                1L,
+               1200L,
+                "796",
                 false,
                 null,
+                Lists.newArrayList(new Price(1L, 1200L)),
                 Lists.newArrayList("AB_1234", "00000001"),
-                Tax.NDS_0_V1,
-                LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER),
-                LocalDateTime.parse("2017-05-05T14:15:01.239Z", FORMATTER));
+                new Department("Хлебобулочные изделия", null, 1L));
 
-        Product product2 = new Product(
-                UUID.fromString("cc73c6d9-8d5b-4f3c-8e24-aa582159b589"),
-                "Новый товар 2",
-                ProductType.SCALABLE,
-                0L,
-                4000L,
-                Lists.newArrayList(new Price(1L, 7200L)),
-                true,
-                null,
-                Lists.newArrayList("AB_5834", "00000008"),
-                Tax.NDS_10_V1,
-                LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER),
-                LocalDateTime.parse("2018-06-05T19:54:01.239Z", FORMATTER));
 
         assertEquals(2, products.size());
         assertThat(products, hasItems(product1, product2));
@@ -124,7 +94,6 @@ class ProductsTest extends UnitTestBase {
 
     @Test
     void createProductTest() throws ExecutionException, InterruptedException {
-        System.setProperty(ENDPOINT_KEY, ENDPOINT);
 
         server.stubFor(post(urlEqualTo("/api/products"))
                 .withRequestBody(equalToJson("{\n" +

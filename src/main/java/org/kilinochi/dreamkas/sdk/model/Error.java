@@ -5,61 +5,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author arman.shamenov
  */
 public class Error implements DreamkasSerializable {
 
-    private @Valid String error;
+    @NotNull
+    private final @Valid Integer status;
     @NotNull
     private final @Valid String code;
     @NotNull
     private final @Valid String message;
 
     @JsonCreator
-    public Error(@JsonProperty("code") String code, @JsonProperty("message") String message) {
+    public Error(@JsonProperty("status") Integer status,
+                 @JsonProperty("code") String code,
+                 @JsonProperty("message") String message) {
+        this.status = status;
         this.code = code;
         this.message = message;
     }
 
-    /**
-     * Error
-     * @return error
-     **/
-    @JsonProperty("error")
-    public String getError() {
-        return error;
+    @JsonProperty("status")
+    public @NotNull Integer getStatus() {
+        return status;
     }
 
-    /**
-     * Error code
-     * @return code
-     **/
     @JsonProperty("code")
-    public String getCode() {
+    public @NotNull String getCode() {
         return code;
     }
 
-    /**
-     * Human-readable description
-     * @return message
-     **/
     @JsonProperty("message")
-    public String getMessage() {
+    public @NotNull String getMessage() {
         return message;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("error", error)
-                .append("code", code)
-                .append("message", message)
-                .toString();
     }
 
     @Override
@@ -72,21 +55,30 @@ public class Error implements DreamkasSerializable {
             return false;
         }
 
-        Error error1 = (Error) o;
+        Error error = (Error) o;
 
         return new EqualsBuilder()
-                .append(error, error1.error)
-                .append(code, error1.code)
-                .append(message, error1.message)
+                .append(status, error.status)
+                .append(code, error.code)
+                .append(message, error.message)
                 .isEquals();
     }
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(error)
+                .append(status)
                 .append(code)
                 .append(message)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("status", status)
+                .append("code", code)
+                .append("message", message)
+                .toString();
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.validation.Valid;
 
@@ -16,30 +16,32 @@ import javax.validation.Valid;
  */
 public class Meta implements DreamkasSerializable {
 
-    @NotNull
+    public static Meta EMPTY = new Meta(null, null, null ,null, null, null,null);
+
+    @Nullable
     private final @Valid String code;
-    @NotNull
+    @Nullable
     private final @Valid String typeCode;
-    @NotNull
+    @Nullable
     private final @Valid Integer volume;
     // 1-1000
-    @NotNull
+    @Nullable
     private final @Valid Integer alc;
-    @NotNull
+    @Nullable
     private final @Valid String originCountryCode;
-    @NotNull
+    @Nullable
     private final @Valid String customEntryNum;
-    @NotNull
+    @Nullable
     private final @Valid Integer exciseDuty;
 
     @JsonCreator
-    public Meta(@JsonProperty("code") @NotNull @Valid String code,
-                @JsonProperty("typeCode") @NotNull @Valid String typeCode,
-                @JsonProperty("volume") @NotNull @Valid Integer volume,
-                @JsonProperty("alc") @NotNull @Valid Integer alc,
-                @JsonProperty("originCountryCode") @NotNull @Valid String originCountryCode,
-                @JsonProperty("customEntryNum") @NotNull @Valid String customEntryNum,
-                @JsonProperty("exciseDuty") @NotNull @Valid Integer exciseDuty) {
+    public Meta(@JsonProperty("code") @Nullable @Valid String code,
+                @JsonProperty("typeCode") @Nullable @Valid String typeCode,
+                @JsonProperty("volume") @Nullable @Valid Integer volume,
+                @JsonProperty("alc") @Nullable @Valid Integer alc,
+                @JsonProperty("originCountryCode") @Nullable @Valid String originCountryCode,
+                @JsonProperty("customEntryNum") @Nullable @Valid String customEntryNum,
+                @JsonProperty("exciseDuty") @Nullable @Valid Integer exciseDuty) {
         this.code = code;
         this.typeCode = typeCode;
         this.volume = volume;
@@ -49,43 +51,43 @@ public class Meta implements DreamkasSerializable {
         this.exciseDuty = exciseDuty;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("alc")
     public Integer getAlc() {
         return alc;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("exciseDuty")
     public Integer getExciseDuty() {
         return exciseDuty;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("volume")
     public Integer getVolume() {
         return volume;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("code")
     public String getCode() {
         return code;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("customEntryNum")
     public String getCustomEntryNum() {
         return customEntryNum;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("originCountryCode")
     public String getOriginCountryCode() {
         return originCountryCode;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("typeCode")
     public String getTypeCode() {
         return typeCode;

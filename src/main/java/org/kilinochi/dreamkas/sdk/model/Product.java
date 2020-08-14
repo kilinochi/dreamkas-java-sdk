@@ -22,53 +22,72 @@ public class Product implements DreamkasSerializable {
     private @Valid final UUID id;
     @NotNull
     private @Valid final String name;
+    @Nullable
+    private final String hash;
     @NotNull
     private @Valid final ProductType type;
     @NotNull
-    private @Valid final Long departmentId;
-    @NotNull
     private @Valid final Long quantity;
-    @NotNull
-    private @Valid final List<Price> prices;
-    @NotNull
-    private @Valid final Boolean isMarked;
     @Nullable
     private final Meta meta;
-    @NotNull
-    private final List<@Valid String> barcodes;
-    @Nullable
-    private final Tax tax;
     @NotNull
     private @Valid final LocalDateTime createdAt;
     @NotNull
     private @Valid final LocalDateTime updatedAt;
+    @Nullable
+    private final String imageUrl;
+    @Nullable
+    private @Valid final Long departmentId;
+    @NotNull
+    private @Valid final Long price;
+    @NotNull
+    private @Valid final String unit;
+    @NotNull
+    private @Valid final Boolean isMarked;
+    @Nullable
+    private final Tax tax;
+    @NotNull
+    private @Valid final List<Price> prices;
+    @NotNull
+    private final List<@Valid String> barcodes;
+    @Nullable
+    private @Valid final Department department;
 
     @JsonCreator
-    public Product(
-            @NotNull @JsonProperty("id") UUID id,
-            @NotNull @JsonProperty("name") String name,
-            @NotNull @JsonProperty("type") ProductType type,
-            @NotNull @JsonProperty("departmentId") Long departmentId,
-            @NotNull @JsonProperty("quantity") Long quantity,
-            @NotNull @JsonProperty("prices") List<Price> prices,
-            @NotNull @JsonProperty("isMarked") Boolean isMarked,
-            @Nullable @JsonProperty("meta") Meta meta,
-            @NotNull @JsonProperty("barcodes") List<String> barcodes,
-            @Nullable @JsonProperty("tax") Tax tax,
-            @NotNull @JsonProperty("createdAt") LocalDateTime createdAt,
-            @NotNull @JsonProperty("updatedAt") LocalDateTime updatedAt) {
+    public Product(@JsonProperty("id") UUID id,
+                   @JsonProperty("name") String name,
+                   @JsonProperty("hash") String hash,
+                   @JsonProperty("type") ProductType type,
+                   @JsonProperty("quantity") Long quantity,
+                   @JsonProperty("meta") Meta meta,
+                   @JsonProperty("createdAt") LocalDateTime createdAt,
+                   @JsonProperty("updatedAt") LocalDateTime updatedAt,
+                   @JsonProperty("imageUrl") String imageUrl,
+                   @JsonProperty("departmentId") Long departmentId,
+                   @JsonProperty("price") Long price,
+                   @JsonProperty("unit") String unit,
+                   @JsonProperty("isMarked") Boolean isMarked,
+                   @JsonProperty("tax") Tax tax,
+                   @JsonProperty("prices") List<Price> prices,
+                   @JsonProperty("barcodes") List<@Valid String> barcodes,
+                   @JsonProperty("department") Department department) {
         this.id = id;
         this.name = name;
+        this.hash = hash;
         this.type = type;
-        this.departmentId = departmentId;
         this.quantity = quantity;
-        this.prices = prices;
-        this.isMarked = isMarked;
         this.meta = meta;
-        this.barcodes = barcodes;
-        this.tax = tax;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.imageUrl = imageUrl;
+        this.departmentId = departmentId;
+        this.price = price;
+        this.unit = unit;
+        this.isMarked = isMarked;
+        this.tax = tax;
+        this.prices = prices;
+        this.barcodes = barcodes;
+        this.department = department;
     }
 
     @NotNull
@@ -77,7 +96,7 @@ public class Product implements DreamkasSerializable {
         return name;
     }
 
-    @NotNull
+    @Nullable
     @JsonProperty("departmentId")
     public Long getDepartmentId() {
         return departmentId;
@@ -143,22 +162,29 @@ public class Product implements DreamkasSerializable {
         return updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("id", id)
-                .append("name", name)
-                .append("type", type)
-                .append("departmentId", departmentId)
-                .append("quantity", quantity)
-                .append("prices", prices)
-                .append("isMarked", isMarked)
-                .append("meta", meta)
-                .append("barcodes", barcodes)
-                .append("tax", tax)
-                .append("createdAt", createdAt)
-                .append("updatedAt", updatedAt)
-                .toString();
+    @JsonProperty("hash")
+    public @Nullable String getHash() {
+        return hash;
+    }
+
+    @JsonProperty("imageUrl")
+    public @Nullable String getImageUrl() {
+        return imageUrl;
+    }
+
+    @JsonProperty("price")
+    public @NotNull Long getPrice() {
+        return price;
+    }
+
+    @JsonProperty("unit")
+    public @NotNull String getUnit() {
+        return unit;
+    }
+
+    @JsonProperty("department")
+    public @Nullable Department getDepartment() {
+        return department;
     }
 
     @Override
@@ -176,16 +202,21 @@ public class Product implements DreamkasSerializable {
         return new EqualsBuilder()
                 .append(id, product.id)
                 .append(name, product.name)
+                .append(hash, product.hash)
                 .append(type, product.type)
-                .append(departmentId, product.departmentId)
                 .append(quantity, product.quantity)
-                .append(prices, product.prices)
-                .append(isMarked, product.isMarked)
                 .append(meta, product.meta)
-                .append(barcodes, product.barcodes)
-                .append(tax, product.tax)
                 .append(createdAt, product.createdAt)
                 .append(updatedAt, product.updatedAt)
+                .append(imageUrl, product.imageUrl)
+                .append(departmentId, product.departmentId)
+                .append(price, product.price)
+                .append(tax, product.tax)
+                .append(unit, product.unit)
+                .append(isMarked, product.isMarked)
+                .append(department, product.department)
+                .append(prices, product.prices)
+                .append(barcodes, product.barcodes)
                 .isEquals();
     }
 
@@ -194,16 +225,44 @@ public class Product implements DreamkasSerializable {
         return new HashCodeBuilder(17, 37)
                 .append(id)
                 .append(name)
+                .append(hash)
                 .append(type)
-                .append(departmentId)
                 .append(quantity)
-                .append(prices)
-                .append(isMarked)
                 .append(meta)
-                .append(barcodes)
-                .append(tax)
                 .append(createdAt)
                 .append(updatedAt)
+                .append(imageUrl)
+                .append(departmentId)
+                .append(price)
+                .append(tax)
+                .append(unit)
+                .append(isMarked)
+                .append(department)
+                .append(prices)
+                .append(barcodes)
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("name", name)
+                .append("hash", hash)
+                .append("type", type)
+                .append("quantity", quantity)
+                .append("meta", meta)
+                .append("createdAt", createdAt)
+                .append("updatedAt", updatedAt)
+                .append("imageUrl", imageUrl)
+                .append("departmentId", departmentId)
+                .append("price", price)
+                .append("tax", tax)
+                .append("unit", unit)
+                .append("isMarked", isMarked)
+                .append("department", department)
+                .append("prices", prices)
+                .append("barcodes", barcodes)
+                .toString();
     }
 }

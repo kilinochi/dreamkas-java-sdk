@@ -79,7 +79,7 @@ final class DreamkasHttpTransportClient implements DreamkasTransportClient {
 
     private static String wrapJsonResponse(String body, URI uri) {
         if (body == null) {
-            return null;
+            return "{}";
         }
 
         if (!body.startsWith("[")) {

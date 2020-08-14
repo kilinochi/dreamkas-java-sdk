@@ -22,9 +22,9 @@ public class Department implements DreamkasSerializable {
     private final @Valid Long id;
 
     @JsonCreator
-    public Department(@NotNull @JsonProperty("name") String name,
-                      @Nullable @JsonProperty("tax") Tax tax,
-                      @NotNull @JsonProperty("id") Long id) {
+    public Department(@JsonProperty("name") String name,
+                      @JsonProperty("tax") Tax tax,
+                      @JsonProperty("id") Long id) {
         this.name = name;
         this.tax = tax;
         this.id = id;
